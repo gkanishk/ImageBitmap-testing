@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvasid" height="300" width="300"></canvas>
+    <h1>hello</h1>
+    <script>
+        var canvas = document.getElementById('canvasid'),
+            ctx = canvas.getContext('2d'),
+            image = new Image();
+
+        // Wait for the sprite sheet to load
+        image.onload = function() {
+            Promise.all([
+                // Cut out two sprites from the sprite sheet
+                createImageBitmap(image, 0, 0, 32, 32),
+                createImageBitmap(image, 32, 0, 32, 32)
+            ]).then(function(sprites) {
+                // Draw each sprite onto the canvas
+                ctx.drawImage(sprites[0], 0, 0);
+                ctx.drawImage(sprites[1], 32, 32);
+            });
+        }
+
+        // Load the sprite sheet from an image file
+        image.src = 'data:image/png;base64,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';
+        // var can, cnt;
+        // window.onload = init;
+
+        // function init() {
+        //     can = document.querySelector("#canvasid");
+        //     cnt = can.getContext('2d');
+        //     drawCanvas();
+        // }
+
+        // function drawCanvas() {
+        //     cnt.fillStyle = "red";
+        //     cnt.fillRect(10, 10, 100, 100);
+        // }
+    </script>
+
+</body>
+
+</html>
